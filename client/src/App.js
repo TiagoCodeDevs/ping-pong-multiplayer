@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 // IMPORTANTE: Se for jogar em PCs diferentes na mesma rede, 
 // troque 'localhost' pelo seu IP (ex: 'http://192.168.1.6:3001')
-const socket = io("http://localhost:3001");
+const socket = io("https://ping-pong-multiplayer-1.onrender.com");
 const bounceSound = new Audio('/bounce.mp3');
 
 function App() {
