@@ -149,6 +149,17 @@ function App() {
     socket.emit('updatePaddle', { y });
   };
 
+  const handleTouchMove = (e) => {
+    if (e.cancelable) e.preventDefault();
+
+    const react = canvasRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+
+    const y = touch.clientY - react.top - 50;
+    paddleY.current = y;
+    socket.emit('updatePaddle', { y });
+  };
+
   return (
     <div style={{ 
         background: '#050505',
@@ -218,12 +229,16 @@ function App() {
         width="800"
         height="600"
         onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
         style={{ 
           border: '5px solid #fff',
           borderRadius: '4px', 
           cursor: 'none', 
           background: '#000',
           boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2)',
+          touchAction: 'none',
+          maxWidth: '100%',
+          height: 'auto'
         }}
         
       />
