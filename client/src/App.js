@@ -185,6 +185,34 @@ function App() {
       <div style={{ marginBottom: '10px', color: gameStarted ? '#00ff00' : '#ffcc00' }}>
         {gameStarted ? "🎮 PARTIDA EM ANDAMENTO" : "⏳ AGUARDANDO OPONENTE..."}
       </div>
+      {gameStarted === false && (score.left === 10 || score.right === 10) && (
+        <div style={{
+          position: 'absolute',
+          background: 'rgba(0, 0, 0, 0.8)',
+          padding: '20px',
+          borderRadius: '10px',
+          textAlign: 'center',
+          border: '2px solid #00ffff',
+          zIndex: 10
+        }}>
+          <h1 style={{ color: '#00ffff' }}>
+            {score.left === 10 ? "🏆 ESQUERDA VENCEU!" : "🏆 DIREITA VENCEU!"}
+          </h1>
+          <button
+            onClick={() => socket.emit('requestRestart')}
+            style={{
+              padding: '10px 20px',
+              fontSize: '1.2rem',
+              cursor: 'pointer',
+              background: '#00ffff',
+              border: 'none',
+              fontWeight: 'bold'
+            }}
+          >
+            JOGAR NOVAMENTE
+          </button>
+        </div>  
+      )}
       <canvas
         ref={canvasRef}
         width="800"

@@ -43,11 +43,21 @@ io.on('connection', (socket) => {
     console.log(`Jogador conetado: ${socket.id} - Lado: ${players[socket.id]?.side}`);
 
     socket.on('scored', (side) => {
-        if (side === 'left') globalScore.left++;
-        if (side === 'right') globalScore.right++;
+        if (globalScore.left < 10 && globalScore.right < 10) {
+            if (side === 'left') globalScore.left++;
+            if (side === 'right') globalScore.right++;
+            io.emit('syncScore', globalScore);
 
-        // Avisar todos os jogadores sobre a nova pontuação
+            if (globalScore.left === 10 || globalScore.right === 10) {
+                io.emit('gameState', 'FINISHED');
+            }
+        }
+    });
+
+    socket.on('requestRestart', () => {
+        globalScore = { left: 0, right: 0 };
         io.emit('syncScore', globalScore);
+        io.emit('gameState', 'START');
     });
 
     socket.on('updatePaddle', (data) => {
